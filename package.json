@@ -1,0 +1,25 @@
+{
+  "name": "ipfs-nodejs",
+  "version": "1.0.0",
+  "description": "This is a test app for ipfs",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js "
+  },
+  "author": "hassan-kandil",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "chokidar": "^3.3.1",
+    "ejs": "^3.0.1",
+    "express": "^4.17.1",
+    "express-fileupload": "^1.1.6",
+    "ipfs-cluster-api": "0.0.9",
+    "ipfs-http-client": "^42.0.0",
+    "killport": "^1.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
+}
