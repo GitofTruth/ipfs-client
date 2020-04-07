@@ -15,13 +15,13 @@ const cluster =  ipfsCluster(
 
 // const cluster = ipfsCluster('/ip4/127.0.0.1/tcp/9094')
 
-// var ipfs = new ipfsClient(
-//     {
-//         host: '0.0.0.0',
-//         port: '5001',
-//         protocol: 'http'
-//     }
-// );
+var ipfs = new ipfsClient(
+    {
+        host: '0.0.0.0',
+        port: '5001',
+        protocol: 'http'
+    }
+);
 var app = express();
 
 
@@ -114,8 +114,8 @@ const addFileCluster = async (fileName, filePath) => {
         content: file
       },
       {
-        "replication-min" : 3 ,
-        "replication-max" : 3
+        "replication-min" : 1,
+        "replication-max" : 2
         }
       , (err, result) => {
         err ? console.error(err) : console.log(result)
