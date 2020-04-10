@@ -10,11 +10,13 @@ const cluster =  ipfsCluster(
         host: '0.0.0.0', 
         port: '9094',
         protocol: 'http' }
-    )
+    );
 
 
+  (async () => {
+      console.log(await addAllGitObjects(process.argv[2]))
+    })();
 
-addAllGitObjects(process.argv[2])
 
 async function addAllGitObjects(directoryPath){
 
@@ -39,17 +41,26 @@ async function addAllGitObjects(directoryPath){
     })
       });
 
-    cluster.add(
+      let response;
+
+      try{
+
+        response = await cluster.add(
         allFiles,
       {
         "replication-min" : 1,
         "replication-max" : 2,
         "recursive": true
-        }
-      , (err, result) => {
-        err ? console.error(err) : console.log(result)
+        });
 
-      })
+        console.log(response)
+
+        return response[response.length-2].hash;
+        
+
+      }catch(e){
+        console.error(e);
+        }
 
 }
 

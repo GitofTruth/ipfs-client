@@ -8,7 +8,7 @@ const fs = require('fs');
 const BufferList = require('bl/BufferList')
 const save = require('save-file')
 
-const cid = 'QmQ2r6iMNpky5f1m4cnm3Yqw8VSvjuKpTcK1X7dBR1LkJF'
+//const cid = 'QmQ2r6iMNpky5f1m4cnm3Yqw8VSvjuKpTcK1X7dBR1LkJF'
 
 
 var ipfs = new ipfsClient(

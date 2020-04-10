@@ -43,8 +43,16 @@ async function getGitObject(directoryCID, innerDirectoryName, fileName, localPat
         for await (const chunk of file.content) {
           content.append(chunk)
         }
-        await save(content, localPath+file.path)
+
+        // await save(content, localPath+file.path)
       
+        fs.writeFile(localPath+file.path, content, (err) => {
+            // throws an error, you could also catch it here
+            if (err) throw err;
+        
+            // success case, the file was saved
+            console.log('file saved!');
+        });
         // console.log(content.toString())
       }
     

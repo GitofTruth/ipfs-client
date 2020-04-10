@@ -1,5 +1,3 @@
-
-const ipfsClient = require('ipfs-http-client');
 const ipfsCluster = require('ipfs-cluster-api');
 
 const bodyParser = require('body-parser');
