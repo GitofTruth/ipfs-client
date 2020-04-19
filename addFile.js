@@ -14,56 +14,42 @@ const cluster =  ipfsCluster(
 
 
   (async () => {
-      console.log(await addAllGitObjects(process.argv[2]))
+      console.log(await addFile(process.argv[2]))
     })();
 
 
-async function addAllGitObjects(directoryPath){
+async function addFile(directoryPath){
 
     // const file =  fs.readFileSync(directoryPath);
     var allFiles=[];
 
+    const fileContent = fs.readFileSync(directoryPath);
 
-    fs.readdirSync(directoryPath).forEach(function(innerDirName) {
-
-        innerDirPath =  "" + directoryPath + "/" + innerDirName;
-
-        fs.readdirSync(innerDirPath).forEach(function(file)
-        {
-
-        filePath =  "" + innerDirPath + "/" + file;
-        const fileContent = fs.readFileSync(filePath);
-
-        allFiles.push({
-            path: filePath,
-            content: fileContent
-        });
-    })
-      });
 
       let response;
 
       try{
 
-        console.log(allFiles)
-
         response = await cluster.add(
-        allFiles,
+        {
+            path: directoryPath,
+            content: fileContent
+        },
       {
         "replication-min" : 1,
         "replication-max" : 2,
         "recursive": true
-        });
+            });
 
         console.log(response)
 
-        const CID = response[response.length-1].hash;
+        const CID = response[0].hash;
  
         cluster.status(CID, (err, res) => {
             err ? console.error(err) : console.log(res)
         })
 
-        return response[response.length-1].hash;
+        return response[0].hash;
         
 
       }catch(e){

@@ -41,7 +41,21 @@ async function getFile(directoryCID, localPath){
         // console.log(file.path)
         console.log(file)
         
-        if (!file.content) continue;
+        if (!file.content) {
+
+            if (!fs.existsSync(file.path)) {
+                // Do something
+            fs.mkdir(file.path, 
+            { recursive: true }, (err) => { 
+              if (err) { 
+                return console.error(err); 
+              } 
+              console.log('Directory created successfully!'); 
+            });
+
+            }
+            continue;
+        }
       
         const content = new BufferList()
         for await (const chunk of file.content) {
@@ -52,27 +66,21 @@ async function getFile(directoryCID, localPath){
         // await save(content, localPath+file.path)
 
 
-        fs.mkdir(path.join(localPath, directoryCID), 
-        { recursive: true }, (err) => { 
-          if (err) { 
-            return console.error(err); 
-          } 
-          console.log('Directory created successfully!'); 
-        }); 
+       
 
-        // fs.writeFile(file.path, content, (err) => {
-        //     // throws an error, you could also catch it here
-        //     if (err) throw err;
+        fs.writeFile(file.path, content, (err) => {
+            // throws an error, you could also catch it here
+            if (err) throw err;
         
-        //     // success case, the file was saved
-        //     console.log('file saved!');
-        // });
+            // success case, the file was saved
+            console.log('file saved!');
+        });
 
-        fs.createReadStream(file.path)
-            .pipe(BufferListStream((err, content) => { // note 'new' isn't strictly required
-            // `data` is a complete Buffer object containing the full data
-            //  console.log(content.toString())
-         }))
+        // fs.createReadStream(file.path)
+        //     .pipe(BufferListStream((err, content) => { // note 'new' isn't strictly required
+        //     // `data` is a complete Buffer object containing the full data
+        //     //  console.log(content.toString())
+        //  }))
       
         // console.log(content.toString())
       }
