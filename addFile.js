@@ -7,16 +7,25 @@ const fs = require('fs');
  
 const cluster =  ipfsCluster(
     { 
-        host: '0.0.0.0', 
+        // host: '13.84.154.252', 
+        host: '0.0.0.0',
         port: '9094',
         protocol: 'http' }
     );
 
 
   (async () => {
-      console.log(await addFile(process.argv[2]))
+      var Files = ['ipfs-test/1/file1.txt' , 'ipfs-test/2/file2.txt', 'ipfs-test/3/file3.txt' ];
+      console.log(await addFiles(Files))
     })();
 
+async function addFiles(paths){
+  var hashes = {}
+  for (var i = 0; i < paths.length; i++){
+    hashes[paths[i]] = await addFile(paths[i])
+  }
+  return hashes
+}
 
 async function addFile(directoryPath){
 

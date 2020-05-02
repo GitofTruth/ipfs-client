@@ -22,6 +22,7 @@ async function addAllGitObjects(directoryPath){
 
     // const file =  fs.readFileSync(directoryPath);
     var allFiles=[];
+    var allHashes={};
 
 
     fs.readdirSync(directoryPath).forEach(function(innerDirName) {
@@ -55,15 +56,24 @@ async function addAllGitObjects(directoryPath){
         "recursive": true
         });
 
-        console.log(response)
+        // console.log(response)
 
-        const CID = response[response.length-1].hash;
+    
+        for (var i = 0; i < response.length; i++) {
+          console.log(response[i]);
+        
+          if(fs.lstatSync(response[i].path).isFile())
+            // TODO : only hash name
+            allHashes[response[i].path] = response[i].hash;
+        }
+
+        // const CID = response[response.length-1].hash;
  
-        cluster.status(CID, (err, res) => {
-            err ? console.error(err) : console.log(res)
-        })
+        // cluster.status(CID, (err, res) => {
+        //     err ? console.error(err) : console.log(res)
+        // })
 
-        return response[response.length-1].hash;
+        return allHashes;
         
 
       }catch(e){

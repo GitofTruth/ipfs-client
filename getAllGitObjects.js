@@ -30,20 +30,45 @@ async function getAllGitObjects(cid, localPath){
         localPath = ""
     }
 
-    for await (const file of ipfs.get(cid)) {
+    for await (const file of ipfs.get(directoryCID)) {
         // console.log(file.path)
         console.log(file)
         
-        if (!file.content) continue;
+        if (!file.content) {
+
+            if (!fs.existsSync(file.path)) {
+                // Do something
+            fs.mkdir(file.path, 
+            { recursive: true }, (err) => { 
+              if (err) { 
+                return console.error(err); 
+              } 
+              console.log('Directory created successfully!'); 
+            });
+
+            }
+            continue;
+        }
       
         const content = new BufferList()
         for await (const chunk of file.content) {
           content.append(chunk)
         }
-        await save(content, localPath+file.path)
-      
-        // console.log(content.toString())
-      }
+
+        console.log(content)
+        // await save(content, localPath+file.path)
+
+
+       
+
+        fs.writeFile(file.path, content, (err) => {
+            // throws an error, you could also catch it here
+            if (err) throw err;
+        
+            // success case, the file was saved
+            console.log('file saved!');
+        });
+
     
 }
 

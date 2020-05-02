@@ -27,17 +27,31 @@ var ipfs = new ipfsClient(
 
 
 
-getFile(process.argv[2], process.argv[3])
+// getFile(process.argv[2], process.argv[3])
+
+(async () => {
+  var Files = {
+    'ipfs-test/1/file1.txt': 'QmaEeRvqPfHGHQDBXCykGSe5oZgkCE5onuVqYVMcpeeoo6',
+    'ipfs-test/2/file2.txt': 'QmaWYCE6D68ksZnSh5L12FAiPHxKE7HLny9JjS4Q2ov6de',
+    'ipfs-test/3/file3.txt': 'QmW9g8uq43EiXhFiqVDVYY4Yb73XPJRukR8sJYJdFAjVTG'
+  };
+  await getFiles(Files)
+})();
 
 
+async function getFiles(filesMap){
+  for (var filePath in filesMap){
+    await getFile(filesMap[filePath], filePath+"2");
+  }
+}
 
-async function getFile(directoryCID, localPath){
+async function getFile(CID, localPath){
 
     if (!localPath){
         localPath = ""
     }
 
-    for await (const file of ipfs.get(directoryCID)) {
+    for await (const file of ipfs.get(CID)) {
         // console.log(file.path)
         console.log(file)
         
@@ -68,7 +82,7 @@ async function getFile(directoryCID, localPath){
 
        
 
-        fs.writeFile(file.path, content, (err) => {
+        fs.writeFile(localPath+file.path, content, (err) => {
             // throws an error, you could also catch it here
             if (err) throw err;
         
